@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
 import Link from 'next/link';
+import { useMemo } from 'react';
+import type { FC, ComponentProps, HTMLAttributes } from 'react';
+
 import { useLocale } from '@/hooks/useLocale';
 import { linkWithLocale } from '@/util/linkWithLocale';
-import type { FC, ComponentProps, HTMLAttributes } from 'react';
 
 // This is a wrapper on HTML's `a` tag
 const HtmlLink: FC<HTMLAttributes<HTMLAnchorElement>> = ({
@@ -25,8 +26,8 @@ const LocalizedLink: FC<ComponentProps<typeof Link>> = ({
   const { currentLocale } = useLocale();
 
   const { Component, finalHref } = useMemo(() => {
-    if (/^https?:\/\//.test(href.toString())) {
-      return { Component: HtmlLink, finalHref: href.toString() };
+    if (!href || !href.toString().startsWith('/')) {
+      return { Component: HtmlLink, finalHref: href };
     }
 
     const addLocaleToHref = linkWithLocale(currentLocale.code);
@@ -34,7 +35,7 @@ const LocalizedLink: FC<ComponentProps<typeof Link>> = ({
     return { Component: NextLink, finalHref: addLocaleToHref(href) };
     // We only need to check if the toString() variant of URL has changed
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLocale.code, href.toString()]);
+  }, [currentLocale.code, href]);
 
   return (
     <Component {...extra} href={finalHref}>

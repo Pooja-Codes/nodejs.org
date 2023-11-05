@@ -2,7 +2,9 @@
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
+
 import graymatter from 'gray-matter';
+
 import * as nextHelpers from '../next.helpers.mjs';
 
 // gets the current blog path based on local module path
@@ -43,7 +45,7 @@ const getFrontMatter = (filename, source) => {
   // this is the url used for the blog post it based on the category and filename
   const slug = `/blog/${category}/${basename(filename, extname(filename))}`;
 
-  return { title, author, date, category, slug };
+  return { title, author, date: new Date(date), category, slug };
 };
 
 /**

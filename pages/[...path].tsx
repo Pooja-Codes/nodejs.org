@@ -1,10 +1,11 @@
 import { sep } from 'node:path';
-import Theme from '@/theme';
-import {
-  getMarkdownFile,
-  generateStaticProps,
-  allPaths,
-} from '@/next.dynamic.mjs';
+
+import type {
+  GetStaticPaths,
+  GetStaticPathsResult,
+  GetStaticProps,
+} from 'next';
+
 import {
   ENABLE_STATIC_EXPORT,
   STATIC_ROUTES_IGNORES,
@@ -12,7 +13,12 @@ import {
   DYNAMIC_ROUTES_REWRITES,
   DYNAMIC_GENERATED_ROUTES,
 } from '@/next.constants.mjs';
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import {
+  getMarkdownFile,
+  generateStaticProps,
+  allPaths,
+} from '@/next.dynamic.mjs';
+import Theme from '@/theme';
 import type { DynamicStaticProps } from '@/types';
 
 type DynamicStaticPaths = { path: string[] };
@@ -77,24 +83,22 @@ export const getStaticProps: GetStaticProps<
 // This method is used to retrieve all native statically supported pages (SCR) that
 // we want to provide during build-time + allow fallback for dynamic pages during (ISR)
 export const getStaticPaths: GetStaticPaths<DynamicStaticPaths> = async () => {
-  const paths = [];
-
-  // Retrieves all the dynamic generated paths
-  const dynamicRoutes = DYNAMIC_GENERATED_ROUTES();
-
-  // Retrieves all the static paths (from next.dynamic.mjs)
-  const staticPaths = [...allPaths.values()]
-    .flat()
-    .filter(route => STATIC_ROUTES_IGNORES.every(e => !e(route)))
-    .map(route => route.routeWithLocale);
+  let paths: GetStaticPathsResult<DynamicStaticPaths>['paths'] = [];
 
   if (ENABLE_STATIC_EXPORT) {
-    paths.push(...staticPaths);
+    // Retrieves all the dynamic generated paths
+    const dynamicRoutes = DYNAMIC_GENERATED_ROUTES().map(mapPathnameToRoute);
 
-    paths.push(...dynamicRoutes);
+    // Retrieves all the static paths (from next.dynamic.mjs)
+    const staticPaths = [...allPaths.values()]
+      .flat()
+      .filter(route => STATIC_ROUTES_IGNORES.every(e => !e(route)))
+      .map(route => mapPathnameToRoute(route.routeWithLocale));
+
+    paths = staticPaths.concat(dynamicRoutes);
   }
 
-  return { paths: paths.sort().map(mapPathnameToRoute), fallback: 'blocking' };
+  return { paths: paths.sort(), fallback: 'blocking' };
 };
 
 export default Theme;

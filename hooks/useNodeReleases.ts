@@ -1,4 +1,5 @@
 import { useCallback, useContext } from 'react';
+
 import { NodeReleasesContext } from '@/providers/nodeReleasesProvider';
 import type { NodeReleaseStatus } from '@/types';
 
@@ -11,5 +12,10 @@ export const useNodeReleases = () => {
     [releases]
   );
 
-  return { releases, getReleaseByStatus };
+  const getLatestIsLtsRelease = useCallback(
+    () => releases.find(release => release.isLts),
+    [releases]
+  );
+
+  return { releases, getReleaseByStatus, getLatestIsLtsRelease };
 };

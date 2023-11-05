@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { availableLocales } from './next.locales.mjs';
 import type { NextRequest } from 'next/server';
+
+import { availableLocales } from './next.locales.mjs';
 
 // This Middleware is responsible for handling automatic language detection from a user's Browser
 // This middleware should only run on "/" requests coming to the Website
@@ -18,7 +19,10 @@ export const middleware = async (request: NextRequest) => {
 
   // If we already have a NEXT_LOCALE Cookie, then Redirect to the stored Locale Code
   if (localeCookie?.value && localeCookie.value !== 'default') {
-    return redirectWithLocale(localeCookie.value);
+    // If the language by any reason is not available anymore, ignore the cookie
+    if (availableLocales.some(locale => locale.code === localeCookie.value)) {
+      return redirectWithLocale(localeCookie.value);
+    }
   }
 
   // If not, we try to check if the Browser is sending `Accept-Language` Header

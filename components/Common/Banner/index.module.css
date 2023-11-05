@@ -1,0 +1,39 @@
+.banner {
+  @apply flex
+    w-full
+    flex-row
+    items-center
+    justify-center
+    gap-2
+    px-8
+    py-3
+    text-sm;
+
+  &,
+  a {
+    @apply text-white
+      dark:text-white;
+  }
+
+  a {
+    @apply w-fit
+      underline;
+  }
+
+  svg {
+    @apply h-4
+      w-4;
+  }
+}
+
+.default {
+  @apply bg-green-600;
+}
+
+.error {
+  @apply bg-danger-600;
+}
+
+.warning {
+  @apply bg-warning-600;
+}

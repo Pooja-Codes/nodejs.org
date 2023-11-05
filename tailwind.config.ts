@@ -4,9 +4,10 @@ export default {
   content: [
     './pages/**/*.{tsx,mdx}',
     './components/**/*.tsx',
+    './providers/**/*.tsx',
     './layouts/**/*.tsx',
     './.storybook/preview.tsx',
-    './.storybook/constants.ts',
+    './.storybook/main.ts',
   ],
   theme: {
     colors: {
@@ -31,6 +32,7 @@ export default {
         700: '#6E7B83',
         800: '#556066',
         900: '#2C3437',
+        950: '#0D121C',
       },
       danger: {
         100: '#FBF1F0',
@@ -88,7 +90,7 @@ export default {
         900: '#411526',
       },
       white: '#FFFFFF',
-      black: '#0D121C',
+      transparent: 'transparent',
     },
     fontSize: {
       xs: ['0.75rem', '1rem'],
@@ -111,6 +113,22 @@ export default {
     },
     fontFamily: {
       'open-sans': ['var(--font-open-sans)'],
+      'ibm-plex-mono': ['var(--font-ibm-plex-mono)'],
+    },
+    extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
+      boxShadow: {
+        xs: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
+        lg: '0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08)',
+      },
+      spacing: {
+        '4.5': '1.125rem',
+      },
+      aria: {
+        current: 'current="page"',
+      },
     },
   },
   darkMode: ['class', '[data-theme="dark"]'],

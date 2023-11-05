@@ -34,11 +34,32 @@ const nextConfig = {
   // as we already check it on the CI within each Pull Request
   // we also configure ESLint to run its lint checking on all files (next lint)
   eslint: { dirs: ['.'], ignoreDuringBuilds: true },
+  // Next.js WebPack Bundler does not know how to handle `.mjs` files on `node_modules`
+  // This is not an issue when using TurboPack as it uses SWC and it is ESM-only
+  // Once Next.js uses Turbopack for their build process we can remove this
+  webpack: function (config) {
+    config.module.rules.push({
+      test: /\.m?js$/,
+      type: 'javascript/auto',
+      resolve: { fullySpecified: false },
+    });
+    return config;
+  },
   experimental: {
     // Some of our static pages from `getStaticProps` have a lot of data
     // since we pass the fully-compiled MDX page from `MDXRemote` through
     // a page's static props.
     largePageDataBytes: 128 * 100000,
+    // A list of packages that Next.js should automatically evaluate and optimise the imports for.
+    // @see https://vercel.com/blog/how-we-optimized-package-imports-in-next-js
+    optimizePackageImports: [
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-select',
+      '@radix-ui/react-toast',
+      'tailwindcss',
+    ],
+    // Removes the warning regarding the WebPack Build Worker
+    webpackBuildWorker: false,
   },
 };
 

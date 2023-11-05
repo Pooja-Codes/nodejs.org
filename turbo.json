@@ -4,12 +4,21 @@
   "pipeline": {
     "serve": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "NEXT_PUBLIC_VERCEL_ENV",
+        "NEXT_STATIC_EXPORT",
+        "NEXT_PUBLIC_BASE_URL",
+        "NEXT_PUBLIC_VERCEL_URL",
+        "NEXT_PUBLIC_DIST_URL",
+        "NEXT_PUBLIC_DOCS_URL",
+        "NEXT_PUBLIC_BASE_PATH"
+      ]
     },
     "build": {
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
+        "{app,components,layouts,pages,styles}/**/*.css",
         "{next-data,scripts,i18n}/**/*.{mjs,json}",
         "{app,pages}/**/*.{mdx,md}",
         "*.{md,mdx,json,ts,tsx,mjs,yml}"
@@ -27,12 +36,21 @@
     },
     "start": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "NEXT_PUBLIC_VERCEL_ENV",
+        "NEXT_STATIC_EXPORT",
+        "NEXT_PUBLIC_BASE_URL",
+        "NEXT_PUBLIC_VERCEL_URL",
+        "NEXT_PUBLIC_DIST_URL",
+        "NEXT_PUBLIC_DOCS_URL",
+        "NEXT_PUBLIC_BASE_PATH"
+      ]
     },
     "deploy": {
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
+        "{app,components,layouts,pages,styles}/**/*.css",
         "{next-data,scripts,i18n}/**/*.{mjs,json}",
         "{app,pages}/**/*.{mdx,md}",
         "*.{md,mdx,json,ts,tsx,mjs,yml}"
@@ -49,123 +67,41 @@
       ]
     },
     "lint:js": {
-      "inputs": [
-        "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{next-data,scripts,i18n}/**/*.mjs",
-        ".eslintrc.json",
-        ".eslintignore"
-      ],
+      "cache": false,
       "outputs": [".eslintjscache"]
     },
     "lint:md": {
-      "inputs": [
-        "{app,pages}/**/*.{mdx,md}",
-        "*.{md,mdx}",
-        ".eslintrc.json",
-        ".eslintignore",
-        ".remarkrc.json"
-      ],
+      "cache": false,
       "outputs": [".eslintmdcache"]
     },
-    "lint:scss": {
-      "inputs": [
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
-        ".stylelintrc.mjs",
-        ".stylelintignore"
-      ]
+    "lint:css": {
+      "cache": false,
+      "outputs": [".stylelintcache"]
     },
     "lint": {
-      "inputs": [
-        "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
-        "{next-data,scripts,i18n}/**/*.mjs",
-        "{.storybook,public}/**/*.{ts,js,css}",
-        "{app,pages}/**/*.{mdx,md}",
-        "*.{md,mdx,ts,tsx,mjs,yml}",
-        ".eslintrc.json",
-        ".eslintignore",
-        ".stylelintrc.mjs",
-        ".stylelintignore",
-        ".prettierrc.json",
-        ".prettierignore",
-        ".remarkrc.json"
-      ],
-      "outputs": [".eslintjscache", ".eslintmdcache"]
+      "cache": false,
+      "outputs": [".eslintjscache", ".eslintmdcache", ".stylelintcache"]
     },
     "lint:fix": {
-      "inputs": [
-        "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
-        "{next-data,scripts,i18n}/**/*.mjs",
-        "{.storybook,public}/**/*.{ts,js,css}",
-        "{app,pages}/**/*.{mdx,md}",
-        "*.{md,mdx,ts,tsx,mjs}",
-        ".eslintrc.json",
-        ".eslintignore",
-        ".stylelintrc.mjs",
-        ".stylelintignore",
-        ".prettierrc.json",
-        ".prettierignore",
-        ".remarkrc.json"
-      ],
-      "outputs": [".eslintjscache", ".eslintmdcache"]
+      "cache": false,
+      "outputs": [".eslintjscache", ".eslintmdcache", ".stylelintcache"]
     },
     "prettier": {
-      "inputs": [
-        "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
-        "{next-data,scripts,i18n}/**/*.{mjs,json}",
-        "{.storybook,public}/**/*.{ts,js,css,json}",
-        "{app,pages}/**/*.{mdx,md}",
-        "*.{md,mdx,json,ts,tsx,mjs,yml}",
-        ".eslintrc.json",
-        ".eslintignore",
-        ".stylelintrc.mjs",
-        ".stylelintignore",
-        ".prettierrc.json",
-        ".prettierignore",
-        ".remarkrc.json",
-        ".lintstaged.json"
-      ],
+      "cache": false,
       "outputs": [".prettiercache"]
     },
     "prettier:fix": {
-      "inputs": [
-        "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
-        "{next-data,scripts,i18n}/**/*.{mjs,json}",
-        "{.storybook,public}/**/*.{ts,js,css,json}",
-        "{app,pages}/**/*.{mdx,md}",
-        "*.{md,mdx,json,ts,tsx,mjs,yml}",
-        ".eslintrc.json",
-        ".eslintignore",
-        ".stylelintrc.mjs",
-        ".stylelintignore",
-        ".prettierrc.json",
-        ".prettierignore",
-        ".remarkrc.json",
-        ".lintstaged.json"
-      ],
+      "cache": false,
       "outputs": [".prettiercache"]
     },
     "format": {
-      "inputs": [
-        "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
-        "{next-data,scripts,i18n}/**/*.{mjs,json}",
-        "{.storybook,public}/**/*.{ts,js,css,json}",
-        "{app,pages}/**/*.{mdx,md}",
-        "*.{md,mdx,json,ts,tsx,mjs,yml}",
-        ".eslintrc.json",
-        ".eslintignore",
-        ".stylelintrc.mjs",
-        ".stylelintignore",
-        ".prettierrc.json",
-        ".prettierignore",
-        ".remarkrc.json",
-        ".lintstaged.json"
-      ],
-      "outputs": [".eslintjscache", ".eslintmdcache"]
+      "cache": false,
+      "outputs": [
+        ".eslintjscache",
+        ".eslintmdcache",
+        ".stylelintcache",
+        ".prettiercache"
+      ]
     },
     "storybook": {
       "cache": false,
@@ -174,7 +110,7 @@
     "storybook:build": {
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
+        "{app,components,layouts,pages,styles}/**/*.css",
         "{next-data,scripts,i18n}/**/*.{mjs,json}",
         "{.storybook,public}/**/*.{ts,js,css,json}",
         "{app,pages}/**/*.{mdx,md}",
@@ -185,7 +121,7 @@
     "test:unit": {
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx,mjs}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
+        "{app,components,layouts,pages,styles}/**/*.css",
         "{next-data,scripts,i18n}/**/*.{mjs,json}",
         "{app,pages}/**/*.{mdx,md}",
         "*.{md,mdx,json,ts,tsx,mjs,yml}"
@@ -195,7 +131,7 @@
     "test": {
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx,mjs}",
-        "{app,components,layouts,pages,styles}/**/*.{css,sass,scss}",
+        "{app,components,layouts,pages,styles}/**/*.css",
         "{next-data,scripts,i18n}/**/*.{mjs,json}",
         "{app,pages}/**/*.{mdx,md}",
         "*.{md,mdx,json,ts,tsx,mjs,yml}"

@@ -1,9 +1,11 @@
 import classNames from 'classnames';
-import LocalizedLink from './LocalizedLink';
+import type { FC } from 'react';
+
 import { useLocale } from '@/hooks/useLocale';
 import { useNavigation } from '@/hooks/useNavigation';
 import type { NavigationKeys } from '@/types';
-import type { FC } from 'react';
+
+import LocalizedLink from './LocalizedLink';
 
 type SideNavigationProps = {
   navigationKey: NavigationKeys;
@@ -19,15 +21,25 @@ const SideNavigation: FC<SideNavigationProps> = ({
 
   const sideNavigationItems = getSideNavigation(navigationKey, context);
 
-  const getLinkClassName = (href: string) =>
-    classNames({ active: isCurrentLocaleRoute(href) });
+  const getLinkClasses = (href: string, level: number) =>
+    classNames({ active: isCurrentLocaleRoute(href), level });
 
   return (
     <nav aria-label="secondary">
       <ul>
-        {sideNavigationItems.map((item, key) => (
-          <li key={key} className={getLinkClassName(item.link)}>
+        {sideNavigationItems.map(item => (
+          <li key={item.key} className={getLinkClasses(item.link, item.level)}>
             <LocalizedLink href={item.link}>{item.text}</LocalizedLink>
+
+            {item.items.length > 0 && (
+              <ul>
+                {item.items.map(({ link, level, text, key }) => (
+                  <li key={key} className={getLinkClasses(link, level)}>
+                    <LocalizedLink href={link}>{text}</LocalizedLink>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>

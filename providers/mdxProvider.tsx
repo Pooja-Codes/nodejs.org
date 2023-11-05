@@ -1,21 +1,21 @@
-import { useEffect } from 'react';
-import { MDXProvider as BaseMDXProvider } from '@mdx-js/react';
-import { MDXRemote } from 'next-mdx-remote';
-import NodeApiVersionLinks from '@/components/Docs/NodeApiVersionLinks';
-import type { FC } from 'react';
 import type { MDXComponents } from 'mdx/types';
+import { useMemo } from 'react';
+import type { FC } from 'react';
 
-const mdxComponents: MDXComponents = {
-  NodeApiVersionLinks: NodeApiVersionLinks,
-  blockquote: ({ children }) => <div className="highlight-box">{children}</div>,
+import { runMDX } from '@/next.mdx.compiler.mjs';
+import { htmlComponents, mdxComponents } from '@/next.mdx.use.mjs';
+
+// Combine all MDX Components to be used
+const combinedComponents: MDXComponents = {
+  ...htmlComponents,
+  ...mdxComponents,
 };
 
 export const MDXProvider: FC<{ content: string }> = ({ content }) => {
-  useEffect(() => window.startLegacyApp(), []);
+  // Parses the MDX Function and eval's it into a React Component
+  // We don't need asynchronous runtime here as we want to render the MDX
+  // as soon as it is available and be able to make initial renders
+  const MDXContent = useMemo(() => runMDX(content), [content]);
 
-  return (
-    <BaseMDXProvider components={mdxComponents} disableParentContext>
-      <MDXRemote compiledSource={content} frontmatter={null} scope={null} />
-    </BaseMDXProvider>
-  );
+  return <MDXContent components={combinedComponents} />;
 };

@@ -1,15 +1,17 @@
 import { useMemo } from 'react';
-import BaseLayout from './BaseLayout';
-import SideNavigation from '@/components/SideNavigation';
-import { useNodeReleases } from '@/hooks/useNodeReleases';
 import type { FC, PropsWithChildren } from 'react';
 
+import SideNavigation from '@/components/SideNavigation';
+import { useNodeReleases } from '@/hooks/useNodeReleases';
+
+import BaseLayout from './BaseLayout';
+
 const DocsLayout: FC<PropsWithChildren> = ({ children }) => {
-  const { getReleaseByStatus } = useNodeReleases();
+  const { getReleaseByStatus, getLatestIsLtsRelease } = useNodeReleases();
 
   const [lts, current] = useMemo(
-    () => [getReleaseByStatus('Active LTS'), getReleaseByStatus('Current')],
-    [getReleaseByStatus]
+    () => [getLatestIsLtsRelease(), getReleaseByStatus('Current')],
+    [getLatestIsLtsRelease, getReleaseByStatus]
   );
 
   const translationContext = {
@@ -22,11 +24,14 @@ const DocsLayout: FC<PropsWithChildren> = ({ children }) => {
       fullCurrentNodeVersion: current ? current.versionWithPrefix : undefined,
       currentNodeVersion: current ? `v${current.major}.x` : undefined,
     },
+    guides: {
+      spanGuides: <span className="small color-lightgray">ARCHIVE</span>,
+    },
   };
 
   return (
     <BaseLayout>
-      <div className="container has-side-nav">
+      <div className="has-side-nav container">
         <SideNavigation navigationKey="docs" context={translationContext} />
         <article dir="auto">{children}</article>
       </div>
